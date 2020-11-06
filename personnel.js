@@ -5,7 +5,7 @@ var cTable = require('console.table');
 var connection = mysql.createConnection({
     host: "localhost",
 
-    port: 8080,
+    port: 3306,
 
     user: "root",
 
@@ -34,34 +34,39 @@ function start() {
                 case "View All Employees":
                     viewAll();
                     break;
-            //     case "View all Employees by Department":
-            //         viewByDepartment();
-            //         break;
-            //     case "View All Employees by Manager":
-            //         viewByManager();
-            //         break;
-            //     case "Add Employee":
-            //         addEmployee();
-            //         break;
-            //     case "Remove Employee":
-            //         removeEmployee();
-            //         break;
-            //     case "Update Employee Role":
-            //         updateRole();
-            //         break;
-            //     case "Update Employee Manager":
-            //         updateManager();
-            //         break;
+                case "View all Employees by Department":
+                    viewByDepartment();
+                    break;
+                case "View All Employees by Manager":
+                    viewByManager();
+                    break;
+                case "Add Employee":
+                    addEmployee();
+                    break;
+                case "Remove Employee":
+                    removeEmployee();
+                    break;
+                case "Update Employee Role":
+                    updateRole();
+                    break;
+                case "Update Employee Manager":
+                    updateManager();
+                    break;
             connection.end();
             };
         });
         function viewAll(){
-            connection.query("SELECT * FROM employee", function(err, res){
+            connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, name department, salary, CONCAT(manager.first_name, " ", manager.last_name) manager FROM employee
+            LEFT JOIN role ON employee.role_id = role.id
+            LEFT JOIN department ON role.department_id = department.id
+            LEFT JOIN employee manager ON employee.manager_id = manager.id;`, function(err, res){
                 if (err) throw err;
                 console.table(res);
                 start();
             });
         };
+
+
 };
 
 
