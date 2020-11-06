@@ -1,6 +1,7 @@
 DROP DATABASE IF EXISTS personnel_managerDB;
 CREATE DATABASE personnel_managerDB;
 USE personnel_managerDB;
+ALTER USER'root'@'localhost' IDENTIFIED BY 'password';
 CREATE TABLE department(
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
  name VARCHAR(30) NOT NULL
