@@ -27,7 +27,7 @@ function start() {
             name: "menu",
             type: "list",
             message: "What would you like to do?",
-            choices: ["View All Employees", "View all Employees by Department", "View All Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager"],
+            choices: ["View All Employees", "View all Employees by Department", "View All Employees by Manager", "View Employees by Role", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "Remove Role", "Remove Department", "Exit Program"],
         })
         .then(function (answer) {
             switch (answer.menu) {
@@ -39,6 +39,9 @@ function start() {
                     break;
                 case "View All Employees by Manager":
                     viewByManager();
+                    break;
+                case "View Employees by Role":
+                    viewRole();
                     break;
                 case "Add Employee":
                     addEmployee();
@@ -52,19 +55,107 @@ function start() {
                 case "Update Employee Manager":
                     updateManager();
                     break;
-            connection.end();
+                case "Remove Role":
+                    removeRole();
+                    break;
+                case "Remove Department":
+                    removeDepartment();
+                    break;
+                    connection.end();
             };
         });
-        function viewAll(){
-            connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, name department, salary, CONCAT(manager.first_name, " ", manager.last_name) manager FROM employee
+
+    function viewAll() {
+        connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, name department, salary, CONCAT(manager.first_name, " ", manager.last_name) manager FROM employee
             LEFT JOIN role ON employee.role_id = role.id
             LEFT JOIN department ON role.department_id = department.id
-            LEFT JOIN employee manager ON employee.manager_id = manager.id;`, function(err, res){
-                if (err) throw err;
-                console.table(res);
-                start();
-            });
-        };
+            LEFT JOIN employee manager ON employee.manager_id = manager.id;`, function (err, res) {
+            if (err) throw err;
+            console.table(res);
+            start();
+        });
+    };
+
+    function viewByDepartment() {
+        inquirer.prompt({
+            type: "list",
+            name: "View By Department",
+            message: "Select Department to View",
+            choices: function () {
+                var departmentChoices = [];
+                for (var i = 0; i < res.length; i++) {
+                    departmentChoices.push(res[i].department);
+                }
+                return departmentChoices;
+            }.then(function (answer) {
+                connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, name department, salary, CONCAT(manager.first_name, " ", manager.last_name) manager FROM employee
+                LEFT JOIN role ON employee.role_id = role.id
+                LEFT JOIN department ON role.department_id = department.id
+                LEFT JOIN employee manager ON employee.manager_id = manager.id;`, function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    start();
+                })
+            })
+
+        })
+    };
+    // function viewByManager() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+    // function viewRole() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+    // function addEmployee() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+    // function removeEmployee() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+    // function updateRole() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+    // function updateManager() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+    // function removeRole() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+    // function removeDepartment() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
 
 
 };
