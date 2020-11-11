@@ -77,28 +77,39 @@ function start() {
     };
 
     function viewByDepartment() {
-        inquirer.prompt({
-            type: "list",
-            name: "View By Department",
-            message: "Select Department to View",
-            choices: function () {
-                var departmentChoices = [];
-                for (var i = 0; i < res.length; i++) {
-                    departmentChoices.push(res[i].department);
+  
+        inquirer
+            .prompt({
+                type: "list",
+                name: "View By Department",
+                message: "Select Department to View",
+                choices: function(){
+                    var department = "SELECT role.title";
+                    console.log(department);
                 }
-                return departmentChoices;
-            }.then(function (answer) {
+
+
+                    // var departmentChoices = [];
+                //     for (var i = 0; i < departmentChoices.length; i++) {
+                //         departmentChoices.push(res[i].department);
+                //     }
+                //     console.log("success");
+                //     console.log(departmentChoices);
+                //     return departmentChoices;
+                    
+                // }
+            }).then(function(answer) {
+   
                 connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, name department, salary, CONCAT(manager.first_name, " ", manager.last_name) manager FROM employee
-                LEFT JOIN role ON employee.role_id = role.id
-                LEFT JOIN department ON role.department_id = department.id
-                LEFT JOIN employee manager ON employee.manager_id = manager.id;`, function (err, res) {
+            LEFT JOIN role ON employee.role_id = role.id
+            LEFT JOIN department ON role.department_id = department.id
+            LEFT JOIN employee manager ON employee.manager_id = manager.id;`, function (err, res) {
                     if (err) throw err;
                     console.table(res);
                     start();
-                })
-            })
+    });
 
-        })
+})
     };
     // function viewByManager() {
     //     connection.query(      , function (err, res)[
