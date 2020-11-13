@@ -27,17 +27,17 @@ function start() {
             name: "menu",
             type: "list",
             message: "What would you like to do?",
-            choices: ["View All Employees", "View Employees by Department", "View All Employees by Manager", "View Employees by Role", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "Remove Role", "Remove Department", "Exit Program"],
+            choices: ["View All Employees", "View Departments", "View Roles", "Add Employee", "Update Employee Role", "Add Role", "Add Department", "Exit Program"],
         })
         .then(function (answer) {
             switch (answer.menu) {
                 case "View All Employees":
                     viewAll();
                     break;
-                case "View Employees by Department":
+                case "View Departments":
                     viewByDepartment();
                     break;
-                case "View Employees by Role":
+                case "View Roles":
                     viewRole();
                     break;
                 case "Add Employee":
@@ -71,24 +71,88 @@ function start() {
         connection.query(`SELECT name FROM department`, function (err, res) {
             if (err) throw err;
             console.table(res);
+            start();
+        });
+    };
 
-            inquirer
-                .prompt({
-                    type: "list",
-                    name: "View By Department",
-                    message: "Select Department to View",
-                    choices: function () {
-                        var departmentChoices = [];
-                        for (var i = 0; i < departmentChoices.length; i++) {
-                            departmentChoices.push(res[i]);
-                        }
-                        return departmentChoices;
-                    }
+    function viewRole() {
+        connection.query(`SELECT title FROM role`, function (err, res) {
+            if (err) throw err;
+            console.table(res);
+            start();
+        });
 
-                }).then(function (answer) {
+    };
+    // function updateRole() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+
+    // function addEmployee() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+    function addRole() {
+        connection.query("SELECT * FROM department", function (error, departments) {
+            console.log(departments);
+            var departmentList = departments.map(function (department) {
+                return department.name;
+            });
+            console.log(departmentList);
+            inquirer.prompt([{
+                type: "input",
+                message: "What Is the Title of The New Role?",
+                name: "newTitle"
+            },
+
+            {
+                type: "input",
+                message: "What is the Salary?",
+                name: "newSalary"
+            },
+
+            {
+                type: "list",
+                message: "What is the Department?",
+                name: "newRoleDepartment",
+                choices: departmentList,
+            },
+
+            ]).then(function (userInput) {
+                var departmentObject = departments.find(function(department){
+                    return department.name===userInput.newRoleDepartment;
+                })
+                connection.query(`INSERT INTO role (title, salary, department_id) VALUES(?,?,?)`, [userInput.newTitle, userInput.newSalary, departmentObject.id], function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
                     start();
                 });
+            })
+
         })
+
+    };
+
+    function addDepartment() {
+        inquirer.prompt({
+            type: "input",
+            message: "What Department Would You Like to Add?",
+            name: "newDepartment",
+
+        }).then(function (userInput) {
+            connection.query("INSERT INTO department (name) VALUES (?)", userInput.newDepartment, function (err, res) {
+                if (err) throw err;
+                console.table(res);
+                start();
+            });
+        })
+
     };
 
 };
@@ -154,42 +218,6 @@ function start() {
     //         ]);
     // };
 
-     // function viewRole() {
-    //     connection.query(      , function (err, res)[
-    //             if (err) throw err;
-    //     console.table(res);
-    //     start();
-    //         ]);
 
-    // };
-    // function addEmployee() {
-    //     connection.query(      , function (err, res)[
-    //             if (err) throw err;
-    //     console.table(res);
-    //     start();
-    //         ]);
-    // };
 
-    // function updateRole() {
-    //     connection.query(      , function (err, res)[
-    //             if (err) throw err;
-    //     console.table(res);
-    //     start();
-    //         ]);
-    // };
 
-    // function addRole() {
-    //     connection.query(      , function (err, res)[
-    //             if (err) throw err;
-    //     console.table(res);
-    //     start();
-    //         ]);
-    // };
-
-    // function addDepartment() {
-    //     connection.query(      , function (err, res)[
-    //             if (err) throw err;
-    //     console.table(res);
-    //     start();
-    //         ]);
-    // };
