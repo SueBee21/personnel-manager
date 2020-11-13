@@ -27,18 +27,15 @@ function start() {
             name: "menu",
             type: "list",
             message: "What would you like to do?",
-            choices: ["View All Employees", "View all Employees by Department", "View All Employees by Manager", "View Employees by Role", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "Remove Role", "Remove Department", "Exit Program"],
+            choices: ["View All Employees", "View Employees by Department", "View All Employees by Manager", "View Employees by Role", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "Remove Role", "Remove Department", "Exit Program"],
         })
         .then(function (answer) {
             switch (answer.menu) {
                 case "View All Employees":
                     viewAll();
                     break;
-                case "View all Employees by Department":
+                case "View Employees by Department":
                     viewByDepartment();
-                    break;
-                case "View All Employees by Manager":
-                    viewByManager();
                     break;
                 case "View Employees by Role":
                     viewRole();
@@ -46,20 +43,14 @@ function start() {
                 case "Add Employee":
                     addEmployee();
                     break;
-                case "Remove Employee":
-                    removeEmployee();
-                    break;
                 case "Update Employee Role":
                     updateRole();
                     break;
-                case "Update Employee Manager":
-                    updateManager();
+                case "Add Role":
+                    addRole();
                     break;
-                case "Remove Role":
-                    removeRole();
-                    break;
-                case "Remove Department":
-                    removeDepartment();
+                case "Add Department":
+                    addDepartment();
                     break;
                     connection.end();
             };
@@ -77,7 +68,6 @@ function start() {
     };
 
     function viewByDepartment() {
-
         connection.query(`SELECT name FROM department`, function (err, res) {
             if (err) throw err;
             console.table(res);
@@ -88,33 +78,89 @@ function start() {
                     name: "View By Department",
                     message: "Select Department to View",
                     choices: function () {
-                     var departmentChoices = [];
+                        var departmentChoices = [];
                         for (var i = 0; i < departmentChoices.length; i++) {
                             departmentChoices.push(res[i]);
                         }
-                        console.log("success");
-                        console.log(departmentChoices);
                         return departmentChoices;
                     }
+
                 }).then(function (answer) {
                     start();
                 });
-
         })
     };
-    // function viewByManager() {
+
+};
+
+
+
+                //     case "View All Employees by Manager":
+                //         viewByManager();
+                //         break;
+
+                                //     case "Remove Employee":
+                //         removeEmployee();
+                //         break;
+                                //     case "Update Employee Manager":
+                //         updateManager();
+                //         break;
+                                //     case "Remove Role":
+                //         removeRole();
+                //         break;
+                                //     case "Remove Department":
+                //         removeDepartment();
+                //         break;
+
+
+
+                    // function viewByManager() {
     //     connection.query(      , function (err, res)[
     //             if (err) throw err;
     //     console.table(res);
     //     start();
     //         ]);
     // };
-    // function viewRole() {
+
+        // function removeEmployee() {
     //     connection.query(      , function (err, res)[
     //             if (err) throw err;
     //     console.table(res);
     //     start();
     //         ]);
+    // };
+
+        // function removeDepartment() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+
+    // function removeRole() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+
+        // function updateManager() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
+
+     // function viewRole() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+
     // };
     // function addEmployee() {
     //     connection.query(      , function (err, res)[
@@ -123,13 +169,7 @@ function start() {
     //     start();
     //         ]);
     // };
-    // function removeEmployee() {
-    //     connection.query(      , function (err, res)[
-    //             if (err) throw err;
-    //     console.table(res);
-    //     start();
-    //         ]);
-    // };
+
     // function updateRole() {
     //     connection.query(      , function (err, res)[
     //             if (err) throw err;
@@ -137,21 +177,8 @@ function start() {
     //     start();
     //         ]);
     // };
-    // function updateManager() {
-    //     connection.query(      , function (err, res)[
-    //             if (err) throw err;
-    //     console.table(res);
-    //     start();
-    //         ]);
-    // };
-    // function removeRole() {
-    //     connection.query(      , function (err, res)[
-    //             if (err) throw err;
-    //     console.table(res);
-    //     start();
-    //         ]);
-    // };
-    // function removeDepartment() {
+
+    // function addRole() {
     //     connection.query(      , function (err, res)[
     //             if (err) throw err;
     //     console.table(res);
@@ -159,8 +186,10 @@ function start() {
     //         ]);
     // };
 
-
-};
-
-
-
+    // function addDepartment() {
+    //     connection.query(      , function (err, res)[
+    //             if (err) throw err;
+    //     console.table(res);
+    //     start();
+    //         ]);
+    // };
