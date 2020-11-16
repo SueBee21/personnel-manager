@@ -72,7 +72,7 @@ function start() {
             if (err) throw err;
             console.table(res);
             start();
-        });
+        })
     };
 
     function viewRole() {
@@ -83,13 +83,7 @@ function start() {
         });
 
     };
-    // function updateRole() {
-    //     connection.query(      , function (err, res)[
-    //             if (err) throw err;
-    //     console.table(res);
-    //     start();
-    //         ]);
-    // };
+
 
     // function addEmployee() {
     //     connection.query(      , function (err, res)[
@@ -98,6 +92,51 @@ function start() {
     //     start();
     //         ]);
     // };
+
+    function updateRole() {
+        connection.query(`SELECT employee.id, employee.first_name, employee.last_name, title, name department, salary, CONCAT(manager.first_name, " ", manager.last_name) manager FROM employee
+        LEFT JOIN role ON employee.role_id = role.id
+        LEFT JOIN department ON role.department_id = department.id
+        LEFT JOIN employee manager ON employee.manager_id = manager.id;`, function (err, employees) {
+           console.log(employees);
+            var employeeList = employees.map(function (employee) {
+                return employee.name;
+            });
+            console.log(employeeList);
+            var roleList = roles.map(function (role) {
+                return role.title;
+            });
+            console.log(roleList);
+
+            inquirer.prompt([{
+                type: "list",
+                message: "Select an Employee to Update",
+                name: "selectEmployeeUpdate",
+                choices: employeeList,
+            },
+            {
+                type: "list",
+                message: "Select a New Role",
+                name: "selectUpdatedRole",
+                choices: roleList,
+            }
+
+            ]).then(function (userInput) {
+                var nameObject = employees.find(function (employee) {
+                    return employee.name === userInput.selectEmployeeUpdate;
+                });
+                var roleObject = roles.find(function (role) {
+                    return role.title === userInput.selectUpdatedRole;
+                });
+                connection.query(`UPDATE employee SET role_id = ? WHERE id = ?`, [roleObject.id, nameObject.id], function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    start();
+                });
+            });
+        });
+    };
+
     function addRole() {
         connection.query("SELECT * FROM department", function (error, departments) {
             console.log(departments);
@@ -125,8 +164,8 @@ function start() {
             },
 
             ]).then(function (userInput) {
-                var departmentObject = departments.find(function(department){
-                    return department.name===userInput.newRoleDepartment;
+                var departmentObject = departments.find(function (department) {
+                    return department.name === userInput.newRoleDepartment;
                 })
                 connection.query(`INSERT INTO role (title, salary, department_id) VALUES(?,?,?)`, [userInput.newTitle, userInput.newSalary, departmentObject.id], function (err, res) {
                     if (err) throw err;
