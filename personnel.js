@@ -4,11 +4,8 @@ var cTable = require('console.table');
 
 var connection = mysql.createConnection({
     host: "localhost",
-
     port: 3306,
-
     user: "root",
-
     password: "password",
     database: "personnel_managerDB",
 });
@@ -28,8 +25,7 @@ function start() {
             type: "list",
             message: "What would you like to do?",
             choices: ["View All Employees", "View Departments", "View Roles", "Add Employee", "Update Employee Role", "Add Role", "Add Department", "Exit Program"],
-        })
-        .then(function (answer) {
+        }).then(function (answer) {
             switch (answer.menu) {
                 case "View All Employees":
                     viewAll();
@@ -81,7 +77,6 @@ function start() {
             console.table(res);
             start();
         });
-
     };
 
     function addEmployee() {
@@ -93,7 +88,6 @@ function start() {
                 var roleList = roles.map(function (role) {
                     return role.title;
                 });
-                console.log(roleList);
 
                 inquirer.prompt([{
                     type: "input",
@@ -111,23 +105,18 @@ function start() {
                     name: "newEmployeeRole",
                     choices: roleList,
                 },
-
                 {
                     type: "list",
                     message: "Who is the manager?",
                     name: "employeeManager",
                     choices: managerList,
-                }
-                ]).then(function (userInput) {
-
+                }]).then(function (userInput) {
                     var roleObject = roles.find(function (role) {
                         return role.title === userInput.newEmployeeRole;
                     });
                     var managerObject = manager.find(function (employee) {
                         return (employee.first_name + " " + employee.last_name) === userInput.employeeManager;
                     });
-
-
                     connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id ) VALUES (?,?,?,?)`, [userInput.firstName, userInput.lastName, roleObject.id, managerObject.id], function (err, res) {
                         if (err) throw err;
                         console.table(res);
@@ -135,10 +124,8 @@ function start() {
                     });
                 })
             })
-
-
         });
-    }
+    };
 
 
     function updateRole() {
@@ -150,7 +137,6 @@ function start() {
                 var roleList = roles.map(function (role) {
                     return role.title;
                 });
-                console.log(roleList);
 
                 inquirer.prompt([{
                     type: "list",
@@ -163,9 +149,7 @@ function start() {
                     message: "Select a New Role",
                     name: "selectUpdatedRole",
                     choices: roleList,
-                }
-
-                ]).then(function (userInput) {
+                }]).then(function (userInput) {
                     var nameObject = employees.find(function (employee) {
                         return employee.fullname === userInput.selectEmployeeUpdate;
                     });
@@ -178,39 +162,31 @@ function start() {
                         start();
                     });
                 });
-
-            })
-
+            });
         });
     };
 
     function addRole() {
         connection.query("SELECT * FROM department", function (error, departments) {
-            console.log(departments);
             var departmentList = departments.map(function (department) {
                 return department.name;
             });
-            console.log(departmentList);
             inquirer.prompt([{
                 type: "input",
                 message: "What Is the Title of The New Role?",
                 name: "newTitle"
             },
-
             {
                 type: "input",
                 message: "What is the Salary?",
                 name: "newSalary"
             },
-
             {
                 type: "list",
                 message: "What is the Department?",
                 name: "newRoleDepartment",
                 choices: departmentList,
-            },
-
-            ]).then(function (userInput) {
+            },]).then(function (userInput) {
                 var departmentObject = departments.find(function (department) {
                     return department.name === userInput.newRoleDepartment;
                 })
@@ -219,10 +195,8 @@ function start() {
                     console.table(res);
                     start();
                 });
-            })
-
-        })
-
+            });
+        });
     };
 
     function addDepartment() {
@@ -230,7 +204,6 @@ function start() {
             type: "input",
             message: "What Department Would You Like to Add?",
             name: "newDepartment",
-
         }).then(function (userInput) {
             connection.query("INSERT INTO department (name) VALUES (?)", userInput.newDepartment, function (err, res) {
                 if (err) throw err;

@@ -1,6 +1,4 @@
 # personnel-manager
-
-
   
   ## Table of Contents
   * [Description](#description)
@@ -18,10 +16,7 @@
     AS A business owner, I WANT to be able to view and manage the departments, roles, and employees in my company SO THAT I can organize and plan my business
 
   ## Installation
-  THe following node dependencies are required: 
-    * console.table
-    * inquirer
-    * mysql
+  The following node dependencies are required: console.table, inquirer, mysql
   
   ## Usage 
     This application allows the user to write, save, and delete notes using a deployed website.
@@ -30,21 +25,22 @@
   ## Credits
     This application uses Node dependencies.
   
-    
-  ## License
-  
+  ## License 
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
   
-  ## Badges
-  
+  ## Badges 
   [![GitHub last comm](https://img.shields.io/github/last-commit/google/skia.svg?style=flat)]()
   
   ## Contributing
   n/a
   
   ## Tests
+
+  Video: <iframe src="https://drive.google.com/file/d/1eTXmqmlfOzvHYQDvS11PUEcKH8bZgDZM/preview" width="640" height="480"></iframe>
+
     Screenshot of deployed application:
+<img width="1792" alt="Screen Shot 2020-11-21 at 10 26 56 PM" src="https://user-images.githubusercontent.com/68358265/99892949-cf2c8180-2c48-11eb-9b0a-668a1ebedac7.png">
   
 ## Questions
 * For any additional questions, I can be reached through Git Hub: 
